@@ -1,20 +1,48 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-title>
+            Blank
+        </ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+    <ion-header collapse="condense">
+        <ion-toolbar>
+            <ion-title size="large">Blank</ion-title>
+        </ion-toolbar>
+    </ion-header>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+    <div class="container">
+
+        <div style="border: solid black 1px;" [style.width.px]=signaturePadWidth [style.height.px]=signaturePadHeight>
+            <!-- <signature-pad [options]="signaturePadOptions" (onBeginEvent)="drawStart()" (onEndEvent)="drawComplete()" #pad>
+      </signature-pad> -->
+            <canvas id="signature-pad" [style.width.px]=signaturePadWidth [style.height.px]=signaturePadHeight></canvas>
+        </div>
+        <ion-button color="warn" id="drawClearButton" *ngIf="canvasWidth>0" (click)="drawClear()">Clear Signature</ion-button>
+
+        <div>
+            <!-- <button (click)="onLoadPDF()">LoadPDF</button> -->
+
+            <input id="file" type="file" (change)="upload($event)" style="display: none" accept=".pdf" />
+
+            <ion-button color="primary" onclick="file.click()">Load PDF</ion-button>
+            <ion-button color="primary" (click)="savePdf()">Save PDF</ion-button>
+            <ion-button color="danger" (click)="clear()">clear PDF </ion-button>
+
+            <div class="pdfToolContainer">
+                <ion-button mat-stroked-button color="primary" *ngIf="totalPageNum>0" [disabled]="pageNum<=1" (click)="onClickPreviousePage()"> Prev</ion-button>
+                <ion-button *ngIf="totalPageNum>0" mat-stroked-button style="border:0px">{{pageNum}}/{{totalPageNum}}</ion-button>
+                <ion-button mat-stroked-button color="accent" *ngIf="totalPageNum>0" [disabled]="pageNum>=totalPageNum" (click)="onClickNextPage()">Next</ion-button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="wrapper">
+        <canvas id="pdf-canvas" [width]="canvasWidth" [height]="canvasHeight" [style.left.px]="canvasLeft" [style.top.px]="canvasTop"></canvas>
+        <canvas id="signature-canvas" [width]="canvasWidth" [height]="canvasHeight" [style.left.px]="canvasLeft" [style.top.px]="canvasTop"></canvas>
+    </div>
 </ion-content>
